@@ -1,16 +1,12 @@
----
-title: "Reproducible Research Assignment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research Assignment 1
 
 
 ##Loading and preprocessing the data
 
 
 
-```{r}
+
+```r
 #import required libraries
 library(plyr)
 library(ggplot2)
@@ -34,15 +30,15 @@ Interval changed from text 'hhmm' format to time field.
 ##What is mean total number of steps taken per day?
 
 1.
-```{r}
-step.total <- sum(act$steps,na.rm=TRUE)
 
+```r
+step.total <- sum(act$steps,na.rm=TRUE)
 ```
-The total number of steps is `r step.total`
+The total number of steps is 570608
 
 2.
-```{r}
 
+```r
 #summarise steps by date, use NA if no data available for that day
 date.sum <- ddply(act,.(date),summarize,sum=sum(steps,na.rm=FALSE))
 
@@ -50,22 +46,24 @@ date.sum <- ddply(act,.(date),summarize,sum=sum(steps,na.rm=FALSE))
 qplot(date,data=date.sum,weight=sum,geom="histogram")
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
 3.
-```{r}
+
+```r
 #mean and median (as vector), ignoring NA values
 Date.mean <- round(mean(date.sum$sum,na.rm=TRUE),2)
 Date.median <- median(date.sum$sum,na.rm=TRUE)
-
 ```
 
-The mean is `r Date.mean` & the median is `r Date.median`. (not sure why mean value hasn't rounded)
+The mean is 1.076619\times 10^{4} & the median is 10765. (not sure why mean value hasn't rounded)
 
 ##What is the average daily activity pattern?
 
 1.
 
-```{r}
 
+```r
 #summarise by time
 time.sum <- ddply(act,.(time),summarize,mean=mean(steps,na.rm=TRUE))
 
@@ -73,25 +71,26 @@ time.sum <- ddply(act,.(time),summarize,mean=mean(steps,na.rm=TRUE))
 plot(time.sum$time,time.sum$mean,type="l",xlab="Time of Day",ylab="Mean Step Count")
 ```
 
-2.
-```{r}
-max.int <- format(time.sum[(time.sum$mean == max(time.sum$mean)),1],"%H:%M")
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
+2.
+
+```r
+max.int <- format(time.sum[(time.sum$mean == max(time.sum$mean)),1],"%H:%M")
 ```
 
-The time interval with the greatest average number of steps is `r max.int`
+The time interval with the greatest average number of steps is 08:35
 
 ##Imputing missing values
 
 1.
 
-```{r}
 
+```r
 x <- is.na(act$steps)
-
 ```
 
-Total number of missing values in the dataset is `r sum(x)`.
+Total number of missing values in the dataset is 2304.
 
 2.
 
@@ -99,7 +98,8 @@ Strategy is to use mean number of steps for the time interval.
 
 3.
 
-```{r}
+
+```r
 #merge act dataset with int.mean
 act.est <- merge(act,time.sum)
 
@@ -112,19 +112,23 @@ act.est <- act.est[,1:3]
 
 4.
 
-```{r}
+
+```r
 est.sum <- ddply(act.est,.(date),summarize,sum=sum(steps,na.rm=FALSE))
 
 #create histogram (fix axis)
 qplot(date,data=est.sum,weight=sum,geom="histogram")
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
+
+```r
 #mean and median (as vector), ignoring NA values
 Est.mean <- round(mean(est.sum$sum,na.rm=TRUE),2)
 Est.median <- median(est.sum$sum,na.rm=TRUE)
-
 ```
 
-With estimations for missing values the mean is `r Est.mean` & the median is `r Est.median`.  
+With estimations for missing values the mean is 1.076564\times 10^{4} & the median is 1.0762\times 10^{4}.  
 
 The impact of adding in the missing values is minimal because they were being excluded from the original mean/median calculations and the spread of NA values was across the day.
 
@@ -132,20 +136,20 @@ The impact of adding in the missing values is minimal because they were being ex
 
 1.
 
-```{r}
 
+```r
 act.est$weekday <- weekdays(as.Date(act.est$date,format="%Y-%m-%d"),abbreviate = TRUE)
 act.est$weekday <-  factor(act.est$weekday %in% c("Mon","Tue","Wed","Thu","Fri")+1L,
       levels=1:2, labels=c('weekend', 'weekday'))
-
 ```
 2.
 
-```{r}
+
+```r
 weekday.sum <- ddply(act.est,.(time,weekday),summarize,mean=mean(steps,na.rm=TRUE))
 
 
 xyplot(mean ~ time | weekday, data = weekday.sum,type = "l",layout=c(1,2))
-
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
