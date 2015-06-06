@@ -1,4 +1,10 @@
-# Reproducible Research Assignment 1
+---
+title: "Reproducible Research Assignment 1"
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+---
 
 
 ##Loading and preprocessing the data
@@ -46,7 +52,7 @@ date.sum <- ddply(act,.(date),summarize,sum=sum(steps,na.rm=FALSE))
 qplot(date,data=date.sum,weight=sum,geom="histogram")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
 3.
 
@@ -71,7 +77,7 @@ time.sum <- ddply(act,.(time),summarize,mean=mean(steps,na.rm=TRUE))
 plot(time.sum$time,time.sum$mean,type="l",xlab="Time of Day",ylab="Mean Step Count")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
 
 2.
 
@@ -120,7 +126,7 @@ est.sum <- ddply(act.est,.(date),summarize,sum=sum(steps,na.rm=FALSE))
 qplot(date,data=est.sum,weight=sum,geom="histogram")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
 
 ```r
 #mean and median (as vector), ignoring NA values
@@ -152,4 +158,4 @@ weekday.sum <- ddply(act.est,.(time,weekday),summarize,mean=mean(steps,na.rm=TRU
 xyplot(mean ~ time | weekday, data = weekday.sum,type = "l",layout=c(1,2))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
