@@ -1,8 +1,9 @@
 ---
 title: "Reproducible Research Assignment 1"
-output: 
+output:
   html_document:
-    keep_md: true
+    keep_md: yes
+  pdf_document: default
 ---
 
 
@@ -53,12 +54,12 @@ qplot(date,data=date.sum,weight=sum,geom="histogram")
 3.
 ```{r}
 #mean and median (as vector), ignoring NA values
-Date.mean <- round(mean(date.sum$sum,na.rm=TRUE),2)
+Date.mean <- as.integer(round(mean(date.sum$sum,na.rm=TRUE),0))
 Date.median <- median(date.sum$sum,na.rm=TRUE)
 
 ```
 
-The mean is `r Date.mean` & the median is `r Date.median`. (not sure why mean value hasn't rounded)
+The mean is `r Date.mean` & the median is `r Date.median`. (had to force mean to integer, was showing in weird sci format even with rounding)
 
 ##What is the average daily activity pattern?
 
@@ -119,8 +120,8 @@ est.sum <- ddply(act.est,.(date),summarize,sum=sum(steps,na.rm=FALSE))
 qplot(date,data=est.sum,weight=sum,geom="histogram")
 
 #mean and median (as vector), ignoring NA values
-Est.mean <- round(mean(est.sum$sum,na.rm=TRUE),2)
-Est.median <- median(est.sum$sum,na.rm=TRUE)
+Est.mean <- as.integer(round(mean(est.sum$sum,na.rm=TRUE),0))
+Est.median <- as.integer(median(est.sum$sum,na.rm=TRUE))
 
 ```
 

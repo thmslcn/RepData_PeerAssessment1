@@ -52,11 +52,11 @@ qplot(date,data=date.sum,weight=sum,geom="histogram")
 
 ```r
 #mean and median (as vector), ignoring NA values
-Date.mean <- round(mean(date.sum$sum,na.rm=TRUE),2)
+Date.mean <- as.integer(round(mean(date.sum$sum,na.rm=TRUE),0))
 Date.median <- median(date.sum$sum,na.rm=TRUE)
 ```
 
-The mean is 1.076619\times 10^{4} & the median is 10765. (not sure why mean value hasn't rounded)
+The mean is 10766 & the median is 10765. (had to force mean to integer, was showing in weird sci format even with rounding)
 
 ##What is the average daily activity pattern?
 
@@ -124,11 +124,11 @@ qplot(date,data=est.sum,weight=sum,geom="histogram")
 
 ```r
 #mean and median (as vector), ignoring NA values
-Est.mean <- round(mean(est.sum$sum,na.rm=TRUE),2)
-Est.median <- median(est.sum$sum,na.rm=TRUE)
+Est.mean <- as.integer(round(mean(est.sum$sum,na.rm=TRUE),0))
+Est.median <- as.integer(median(est.sum$sum,na.rm=TRUE))
 ```
 
-With estimations for missing values the mean is 1.076564\times 10^{4} & the median is 1.0762\times 10^{4}.  
+With estimations for missing values the mean is 10766 & the median is 10762.  
 
 The impact of adding in the missing values is minimal because they were being excluded from the original mean/median calculations and the spread of NA values was across the day.
 
